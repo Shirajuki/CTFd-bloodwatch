@@ -6,19 +6,21 @@ import json
 
 # Constants
 URL = "http://localhost:8000"
+API_URL = "/api/v1"
+# URL = "http://s2gctf.ncr.ntnu.no/play"
+# API_URL = "/play/api/v1"
 LIVESCOREBOARD_URL = "http://localhost:3000"
-team_type = "team" # team | user
+team_type = "user" # team | user
 
 # Global data log
 challenges = {}
-
-# Get challenges
+# Retrieve initial challenges
 cookies = {
     "session": os.environ['SESSION'],
 }
 def populate_challs():
     global challenges
-    res = requests.get(f"{URL}/api/v1/challenges", cookies=cookies)
+    res = requests.get(f"{URL}{API_URL}/challenges", cookies=cookies)
     challs = res.json()
     for chall in challs["data"]:
         if chall["id"] not in challenges:
@@ -30,7 +32,7 @@ pages = 1
 i = pages
 # First loop populating user challenge solves
 while i <= pages:
-    res = requests.get(f"{URL}/api/v1/submissions?pages={i}", cookies=cookies)
+    res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&pages={i}", cookies=cookies)
     data = res.json()
     pages = data["meta"]["pagination"]["pages"] # Update max pages if found
     solves = data["data"]
@@ -51,7 +53,7 @@ print(json.dumps(challenges))
 
 def send_scoreboard():
     # Push data to scoreboard
-    res = requests.get(f"{URL}/api/v1/scoreboard", cookies=cookies)
+    res = requests.get(f"{URL}{API_URL}/scoreboard", cookies=cookies)
     requests.post(f"{LIVESCOREBOARD_URL}/scoreboard", json={"scoreboard": res.json()["data"]})
 send_scoreboard()
 
@@ -70,7 +72,7 @@ while True:
             i = pages
             # First loop populating user challenge solves
             while i <= pages:
-                res = requests.get(f"{URL}/api/v1/submissions?pages={i}", cookies=cookies)
+                res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&pages={i}", cookies=cookies)
                 data = res.json()
                 pages = data["meta"]["pagination"]["pages"] # Update max pages if found
                 solves = data["data"]

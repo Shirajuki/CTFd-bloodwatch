@@ -30,7 +30,7 @@ const useAudio = (url) => {
 		return () => audio.removeEventListener("ended", () => setPlaying(false));
 	}, [setPlaying]);
 
-	return [playing, toggle];
+	return [playing, toggle, audio];
 };
 
 const max = 12;
@@ -41,9 +41,11 @@ const App = () => {
 	const [parent] = useAutoAnimate();
 	const [scoreboard1] = useAutoAnimate();
 	const [scoreboard2] = useAutoAnimate();
-	const [playing1, toggle1] = useAudio(ownage);
-	const [playing2, toggle2] = useAudio(blood);
-	const [playing3, toggle3] = useAudio(pwn);
+	const [playing1, toggle1, audio1] = useAudio(ownage);
+	const [playing2, toggle2, audio2] = useAudio(blood);
+	const [playing3, toggle3, audio3] = useAudio(pwn);
+	const [bloodInfo, setBloodInfo] = useState({});
+	const [ownageInfo, setOwnageInfo] = useState({});
 	const [nums, setNums] = useState([]);
 	const { reward, _isAnimating } = useReward("rewardId", "confetti", {
 		elementCount: 100,
@@ -57,6 +59,13 @@ const App = () => {
 		const newSocket = io(`http://${window.location.hostname}:3000`);
 		// const newSocket = io(`https://livescoreboard.ctf.itemize.no`);
 		setSocket(newSocket);
+
+		// Attach audio to window object
+		window.audio1 = audio1;
+		window.audio2 = audio2;
+		window.audio3 = audio3;
+		console.log("[DEBUG] Adjust sfx volume with `audio1.volume`");
+
 		return () => newSocket.close();
 	}, []);
 
@@ -111,6 +120,7 @@ const App = () => {
 			if (nums.length >= 1 && !playing2) {
 				reward();
 				toggle2();
+				setBloodInfo(nums[0]);
 			}
 			return nums.slice(1);
 		});
@@ -124,6 +134,7 @@ const App = () => {
 			if (nums.length >= 1 && !playing1) {
 				reward();
 				toggle1();
+				setOwnageInfo(nums[0]);
 			}
 			return nums.slice(1);
 		});
@@ -136,14 +147,16 @@ const App = () => {
 			{playing1 && nums.length >= 0 && (
 				<Popup
 					color={colors}
-					text={`${nums[0].team.name} solved all challenges!`}
+					text={`${ownageInfo.team.name} solved all challenges!`}
 					svg="cup"
 				/>
 			)}
 			{playing2 && nums.length >= 0 && (
 				<Popup
 					color={"tomato"}
-					text={`${nums[0].team.name} first blooded "${nums[0].challenge}"!`}
+					text={`${bloodInfo?.team?.name || ""} first blooded "${
+						bloodInfo?.challenge || ""
+					}"!`}
 					svg="blood"
 				/>
 			)}

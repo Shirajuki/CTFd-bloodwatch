@@ -102,34 +102,7 @@ const App = () => {
 	// Play pwnage.mp3
 	useEffect(() => {
 		if (nums.length === 0 || playing3 || playing2 || playing1) return;
-		if (!(nums[0].type === "pwn")) return;
-		setNums((nums) => {
-			if (nums.length >= 1 && !playing3) {
-				reward();
-				toggle3();
-			}
-			return nums.slice(1);
-		});
-	}, [playing3, playing2, playing1, nums, setNums]);
-
-	// Play blood.mp3
-	useEffect(() => {
-		if (nums.length === 0 || playing2 || playing1) return;
-		if (!(nums[0].type === "blood")) return;
-		setNums((nums) => {
-			if (nums.length >= 1 && !playing2) {
-				reward();
-				toggle2();
-				setBloodInfo(nums[0]);
-			}
-			return nums.slice(1);
-		});
-	}, [playing2, playing1, nums, setNums]);
-
-	// Play ownage.mp3
-	useEffect(() => {
-		if (nums.length === 0 || playing1) return;
-		if (!(nums[0].type == "ownage")) return;
+		if (!(nums[0].type === "ownage")) return;
 		setNums((nums) => {
 			if (nums.length >= 1 && !playing1) {
 				reward();
@@ -138,7 +111,32 @@ const App = () => {
 			}
 			return nums.slice(1);
 		});
-	}, [playing1, nums, setNums]);
+	}, [playing3, playing2, playing1, nums, setNums]);
+
+	useEffect(() => {
+		console.log(playing1, playing2, nums);
+		if (nums.length === 0 || playing3 || playing2 || playing1) return;
+		if (nums[0].type == "pwn") {
+			if (playing2) return;
+			setNums((nums) => {
+				if (nums.length >= 1 && !playing3) {
+					reward();
+					toggle3();
+				}
+				return nums.slice(1);
+			});
+		} else if (nums[0].type === "blood") {
+			if (playing3) return;
+			setNums((nums) => {
+				if (nums.length >= 1 && !playing2) {
+					reward();
+					toggle2();
+					setBloodInfo(nums[0]);
+				}
+				return nums.slice(1);
+			});
+		}
+	}, [playing3, playing2, playing1, nums, setNums]);
 
 	return (
 		<div>

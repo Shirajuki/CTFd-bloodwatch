@@ -10,6 +10,7 @@ API_URL = "/api/v1"
 URL = "http://s2gctf.ncr.ntnu.no/play"
 API_URL = "/play/api/v1"
 LIVESCOREBOARD_URL = "http://localhost:3000"
+LIVESCOREBOARD_URL = "https://livescoreboard.ctf.itemize.no"
 team_type = "user" # team | user
 
 # Global data log
@@ -32,7 +33,7 @@ pages = 1
 i = pages
 # First loop populating user challenge solves
 while i <= pages:
-    res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&pages={i}", cookies=cookies)
+    res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&page={i}", cookies=cookies)
     data = res.json()
     pages = data["meta"]["pagination"]["pages"] # Update max pages if found
     solves = data["data"]
@@ -72,7 +73,7 @@ while True:
             i = pages
             # First loop populating user challenge solves
             while i <= pages:
-                res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&pages={i}", cookies=cookies)
+                res = requests.get(f"{URL}{API_URL}/submissions?type=correct&per_page=100&page={i}", cookies=cookies)
                 data = res.json()
                 pages = data["meta"]["pagination"]["pages"] # Update max pages if found
                 solves = data["data"]

@@ -7,8 +7,8 @@ import json
 # Constants
 URL = "http://localhost:8000"
 API_URL = "/api/v1"
-# URL = "http://s2gctf.ncr.ntnu.no/play"
-# API_URL = "/play/api/v1"
+URL = "http://s2gctf.ncr.ntnu.no/play"
+API_URL = "/play/api/v1"
 LIVESCOREBOARD_URL = "http://localhost:3000"
 team_type = "user" # team | user
 

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  ctf-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-server
+    ports:
+      - "33300:3000"
+    tty: true
+    restart: unless-stopped
+  ctf-client:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-client
+    depends_on:
+      - ctf-server
+    ports:
+      - "33301:4173"
+    tty: true
+    restart: unless-stopped

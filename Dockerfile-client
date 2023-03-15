@@ -1,0 +1,11 @@
+FROM node:16-alpine
+
+COPY ./livescoreboard-client /app
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm install --silent
+
+CMD ["npm", "run", "serve"]

@@ -1,6 +1,6 @@
 const Popup = ({ color, text, svg }) => {
 	return (
-		<div class="popup" style={`--color: ${color};`}>
+		<div class={`popup ${svg}`} style={`--color: ${color};`}>
 			{svg == "cup" && (
 				<svg
 					version="1.1"

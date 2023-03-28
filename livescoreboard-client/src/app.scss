@@ -127,6 +127,20 @@
 	animation-fill-mode: forwards;
 	animation-iteration-count: 1;
 	--bounce: cubic-bezier(0.39, 0.58, 0.57, 1.35);
+	&.blood {
+		animation-duration: 1200ms;
+		animation-delay: 11400ms;
+		& > svg {
+			transform: scale(0);
+			animation-duration: 800ms, 1600ms;
+			animation-delay: 7000ms, 7000ms;
+		}
+		& > h1 {
+			transform: scale(0);
+			animation-duration: 800ms, 1600ms;
+			animation-delay: 7000ms, 7000ms;
+		}
+	}
 	.st0 {
 		fill: transparent;
 	}
